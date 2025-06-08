@@ -1,0 +1,373 @@
+/* Estilos do Mapa Interativo */
+.mapaContainer {
+  position: relative;
+}
+
+.mapaConteudo {
+  position: relative;
+  min-height: 300px;
+  overflow: visible;
+}
+
+/* Seletor de Andares */
+.seletorAndares {
+  display: flex;
+  overflow-x: auto;
+  padding: var(--ifm-spacing-horizontal);
+  border-top: 1px solid var(--ifm-color-emphasis-200);
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+  background-color: var(--ifm-background-surface-color);
+  gap: 0.5rem;
+}
+
+.botaoAndar {
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Legendas */
+.legendas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.5rem;
+  font-size: 0.75rem;
+}
+
+.legendaItem {
+  display: flex;
+  align-items: center;
+}
+
+.legendaMarca {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+  margin-right: 0.5rem;
+}
+
+/* Separador */
+.separador {
+  border-top: 1px solid var(--ifm-color-emphasis-200);
+}
+
+/* Detalhes da Sala */
+.detalheSalaContainer {
+  width: 100%;
+}
+
+.detalheSalaContainerExterno {
+  max-width: 400px;
+}
+
+.detalheSalaContainerMobile {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.detalheSalaHeader {
+  position: sticky;
+  top: 0;
+  background-color: var(--ifm-card-background-color);
+  z-index: 10;
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.detalheSalaHeaderContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.detalheSalaTitulo {
+  margin: 0;
+  font-size: 1.125rem;
+  color: var(--ifm-font-color-base);
+}
+
+.detalheSalaSubtitulo {
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+.tabBar {
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+  background-color: var(--ifm-card-background-color);
+  position: sticky;
+  z-index: 9;
+}
+
+.tabContainer {
+  display: flex;
+  overflow-x: auto;
+}
+
+.tabButton {
+  flex: 1;
+  border-radius: 0;
+  border: none;
+}
+
+.contentContainer {
+  overflow-y: auto;
+}
+
+.contentContainerEmbedded {
+  /* Sem altura máxima específica quando incorporado */
+}
+
+.contentContainerExterno {
+  max-height: 400px;
+}
+
+.contentContainerMobile {
+  flex: 1;
+}
+
+.formControl {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: var(--ifm-border-radius);
+  font-size: 0.875rem;
+  background-color: var(--ifm-background-color);
+  color: var(--ifm-font-color-base);
+}
+
+.formTextarea {
+  composes: formControl;
+  resize: none;
+}
+
+/* Info Tab */
+.infoTab {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.infoSection {
+  margin-bottom: 0.5rem;
+}
+
+.infoSectionTitle {
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+.infoDetailItem {
+  margin-bottom: 0.25rem;
+  font-size: 0.875rem;
+}
+
+.infoList {
+  padding-left: 1rem;
+  margin: 0;
+}
+
+.infoListItem {
+  font-size: 0.875rem;
+  margin-bottom: 0.25rem;
+}
+
+/* Ocorrências */
+.ocorrenciasList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.ocorrenciaHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.ocorrenciaTipo {
+  font-size: 0.875rem;
+  font-weight: bold;
+}
+
+.ocorrenciaTexto {
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Form */
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.formTitle {
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+.formGroup {
+  margin-bottom: 0.75rem;
+}
+
+.formLabel {
+  display: block;
+  font-size: 0.875rem;
+  margin-bottom: 0.25rem;
+}
+
+/* Componente SalaClicavel */
+.salaClicavelContainer {
+  transition: all 0.2s ease-in-out;
+}
+
+.salaRect {
+  transition: fill 0.2s ease-in-out, stroke 0.2s ease-in-out;
+}
+
+.salaRectInteractive {
+  cursor: pointer;
+}
+
+.salaText {
+  pointer-events: none;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+.salaTextSelected {
+  font-weight: 600;
+}
+
+.salaTextRegular {
+  font-weight: 500;
+}
+
+.salaTextSmall {
+  letter-spacing: 0.3px;
+}
+
+.salaTextNormal {
+  letter-spacing: 0.1px;
+}
+
+/* Estilos para a grade de horários */
+.horarioGrid {
+  overflow-x: auto;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  background-color: var(--ifm-color-emphasis-0);
+}
+
+.horarioTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.horarioTable th,
+.horarioTable td {
+  border: 1px solid var(--ifm-color-emphasis-300);
+  padding: 0.5rem;
+  text-align: center;
+}
+
+.horarioTable th {
+  background-color: var(--ifm-color-emphasis-200);
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.horarioTurno {
+  background-color: var(--ifm-color-emphasis-100);
+  font-weight: 600;
+}
+
+.horarioCell {
+  vertical-align: top;
+  min-width: 110px;
+  height: 110px;
+}
+
+.horarioAulas {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.horarioAula {
+  background-color: var(--ifm-color-primary-lightest);
+  border-radius: 4px;
+  padding: 0.5rem;
+  font-size: 0.8rem;
+  text-align: left;
+}
+
+.horarioInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.horarioProfessor {
+  font-size: 0.75rem;
+  color: #424242; /* Substituindo var(--ifm-color-emphasis-700) por cor mais escura */
+}
+
+.horarioTurma {
+  font-size: 0.7rem;
+  color: #505050; /* Substituindo var(--ifm-color-emphasis-600) por cor mais escura */
+}
+
+.horarioVazio {
+  color: #666666; /* Substituindo var(--ifm-color-emphasis-500) por cor mais escura */
+  font-style: italic;
+}
+
+/* Media query para melhorar responsividade */
+@media (max-width: 768px) {
+  .horarioTable {
+    font-size: 0.75rem;
+  }
+
+  .horarioCell {
+    min-width: 80px;
+    height: 80px;
+  }
+}
+
+/* Cores das salas - já existentes no arquivo, vamos manter a consistência */
+:root {
+  /* Cores básicas de salas */
+  --sala-default: #eceff1;
+  --sala-hover: #cfd8dc;
+  --sala-selected: #37474f;
+
+  /* Cores de salas especiais */
+  --sala-banheiro-masculino: #e8f4f8;
+  --sala-banheiro-feminino: #fce4ec;
+  --sala-corredor: #f8f9fa;
+  --sala-escada: #f1f3f4;
+  --sala-elevador: #fff8e1;
+  --sala-biblioteca: #f3e5f5;
+  --sala-auditorio: #e8f5e8;
+  --sala-direcao: #fff3e0;
+  --sala-convivencia: #fff8e1;
+  --sala-copa: #f1f8e9;
+  --sala-assessoria: #e0f2f1;
+
+  /* Cores de texto - cores mais escuras/vibrantes */
+  --texto-escuro: #121212;
+  --texto-claro: #ffffff;
+  --texto-medio: #424242; /* Escurecido de #757575 para #424242 */
+
+  /* Cores de borda */
+  --borda-default: #e0e0e0;
+  --borda-selected: #37474f;
+  --borda-hover: #90a4ae;
+  --borda-subtle: #f0f0f0;
+}
