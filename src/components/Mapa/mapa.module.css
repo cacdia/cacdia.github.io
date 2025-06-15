@@ -230,15 +230,22 @@
 
 .salaRectInteractive {
   cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); /* Transição mais suave */
+}
+
+.salaRectInteractive:hover {
+  filter: brightness(1.1); /* Leve brilho no hover */
 }
 
 .salaText {
   pointer-events: none;
   font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); /* Sombra sutil para melhor legibilidade */
 }
 
 .salaTextSelected {
   font-weight: 600;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); /* Sombra mais forte para texto selecionado */
 }
 
 .salaTextRegular {
@@ -340,34 +347,36 @@
   }
 }
 
-/* Cores das salas - já existentes no arquivo, vamos manter a consistência */
+/* Cores das salas - Design profissional com cores vivas */
 :root {
-  /* Cores básicas de salas */
-  --sala-default: #eceff1;
-  --sala-hover: #cfd8dc;
-  --sala-selected: #37474f;
+  /* Cores básicas de salas com tons vivos */
+  --sala-default: #3b82f6; /* Azul vibrante */
+  --sala-hover: #2563eb; /* Azul mais escuro no hover */
+  --sala-selected: #1e40af; /* Azul escuro para seleção */
 
-  /* Cores de salas especiais */
-  --sala-banheiro-masculino: #e8f4f8;
-  --sala-banheiro-feminino: #fce4ec;
-  --sala-corredor: #f8f9fa;
-  --sala-escada: #f1f3f4;
-  --sala-elevador: #fff8e1;
-  --sala-biblioteca: #f3e5f5;
-  --sala-auditorio: #e8f5e8;
-  --sala-direcao: #fff3e0;
-  --sala-convivencia: #fff8e1;
-  --sala-copa: #f1f8e9;
-  --sala-assessoria: #e0f2f1;
+  /* Cores de salas especiais com tons vivos e profissionais */
+  --sala-banheiro-masculino: #06b6d4; /* Ciano vibrante */
+  --sala-banheiro-feminino: #ec4899; /* Rosa vibrante */
+  --sala-corredor: #6b7280; /* Cinza neutro */
+  --sala-escada: #4b5563; /* Cinza escuro */
+  --sala-elevador: #f59e0b; /* Âmbar vibrante */
+  --sala-biblioteca: #8b5cf6; /* Roxo vibrante */
+  --sala-auditorio: #10b981; /* Verde esmeralda */
+  --sala-direcao: #f97316; /* Laranja vibrante */
+  --sala-convivencia: #eab308; /* Amarelo vibrante */
+  --sala-copa: #84cc16; /* Verde limão */
+  --sala-assessoria: #14b8a6; /* Teal vibrante */
+  --sala-laboratorio: #dc2626; /* Vermelho vibrante */
+  --sala-professor: #7c3aed; /* Violeta vibrante */
 
-  /* Cores de texto - cores mais escuras/vibrantes */
-  --texto-escuro: #121212;
+  /* Cores de texto otimizadas para contraste */
+  --texto-escuro: #111827;
   --texto-claro: #ffffff;
-  --texto-medio: #424242; /* Escurecido de #757575 para #424242 */
+  --texto-medio: #374151;
 
-  /* Cores de borda */
-  --borda-default: #e0e0e0;
-  --borda-selected: #37474f;
-  --borda-hover: #90a4ae;
-  --borda-subtle: #f0f0f0;
+  /* Cores de borda com melhor contraste */
+  --borda-default: #d1d5db;
+  --borda-selected: #ffffff;
+  --borda-hover: #9ca3af;
+  --borda-subtle: #e5e7eb;
 }

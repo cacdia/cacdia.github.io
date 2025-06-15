@@ -63,10 +63,12 @@ function SeletorAndares({
 
 function Legendas() {
   const legendaItems = [
-    { cor: "var(--ifm-color-primary)", texto: "Salas de Aula" },
-    { cor: "#10b981", texto: "Laboratórios" },
-    { cor: "#8b5cf6", texto: "Auditórios" },
-    { cor: "#f97316", texto: "Professores" },
+    { cor: "#3b82f6", texto: "Salas de Aula" },
+    { cor: "#dc2626", texto: "Laboratórios" },
+    { cor: "#8b5cf6", texto: "Biblioteca" },
+    { cor: "#10b981", texto: "Auditórios" },
+    { cor: "#7c3aed", texto: "Professores" },
+    { cor: "#f97316", texto: "Direção" },
   ];
 
   return (

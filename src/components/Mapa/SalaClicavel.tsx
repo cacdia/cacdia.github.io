@@ -123,12 +123,28 @@ function RoomText({
 }
 
 /**
- * Gets appropriate room color based on room type
+ * Gets appropriate room color based on room type and sala data
  */
-function getRoomColor(codigo: string, displayText: string): string {
+function getRoomColor(codigo: string, displayText: string, sala?: Sala): string {
   const normalizedText = displayText.toLowerCase();
 
-  // Room color mapping using CSS variables
+  // Primeiro, verifica se temos dados da sala e aplica cor baseada no tipo
+  if (sala?.tipo) {
+    switch (sala.tipo) {
+      case "sala-aula":
+        return "var(--sala-default)";
+      case "laboratorio":
+        return "var(--sala-laboratorio)";
+      case "professor":
+        return "var(--sala-professor)";
+      case "auditorio":
+        return "var(--sala-auditorio)";
+      default:
+        break;
+    }
+  }
+
+  // Mapeamento de cores especiais baseado no texto/nome
   const specialRoomColors: Record<string, string> = {
     "banheiro masculino": "var(--sala-banheiro-masculino)",
     "banheiro feminino": "var(--sala-banheiro-feminino)",
@@ -145,7 +161,7 @@ function getRoomColor(codigo: string, displayText: string): string {
     "assessoria de planejamento": "var(--sala-assessoria)",
   };
 
-  // CI classrooms
+  // Salas CI (salas de aula padrão)
   if (codigo.match(/^CI\s*[0-9]/i)) {
     return "var(--sala-default)";
   }
@@ -174,8 +190,8 @@ export function SalaClicavel({
   const isInfrastructure = isInfrastructureRoom(displayText);
   const isInteractive = isClickable && !isInfrastructure;
 
-  // Room state and styling
-  const baseColor = getRoomColor(codigo, displayText);
+  // Room state and styling - Atualizado para usar o sala parameter
+  const baseColor = getRoomColor(codigo, displayText, sala);
   const backgroundColor = isSelected
     ? "var(--sala-selected)"
     : isHovered && isInteractive
@@ -199,8 +215,8 @@ export function SalaClicavel({
     return Math.max(minSize, Math.min(maxSize, baseSize * textAdjustment));
   })();
 
-  // Text color for contrast
-  const textColor = backgroundColor === "var(--sala-selected)"
+  // Text color for contrast - Melhorado para cores vivas
+  const textColor = isSelected || (baseColor !== "var(--sala-corredor)" && baseColor !== "var(--sala-escada)")
     ? "var(--texto-claro)"
     : "var(--texto-escuro)";
 
