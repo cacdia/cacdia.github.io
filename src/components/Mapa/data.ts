@@ -316,13 +316,40 @@ export interface HorarioAula {
   disciplina: string;
   professor: string;
   turma: string;
+  periodo: number; // Adicionar período específico
 }
 
 type DiaSemana = 'Segunda' | 'Terça' | 'Quarta' | 'Quinta' | 'Sexta' | 'Sábado';
 type Turno = 'Manhã' | 'Tarde' | 'Noite';
 
+// Mapeamento dos períodos por turno conforme SIGAA UFPB
+export const PERIODOS_POR_TURNO: Record<Turno, Array<{ periodo: number; horario: string }>> = {
+  'Manhã': [
+    { periodo: 1, horario: '07:00-08:00' },
+    { periodo: 2, horario: '08:00-09:00' },
+    { periodo: 3, horario: '09:00-10:00' },
+    { periodo: 4, horario: '10:00-11:00' },
+    { periodo: 5, horario: '11:00-12:00' },
+    { periodo: 6, horario: '12:00-13:00' }
+  ],
+  'Tarde': [
+    { periodo: 1, horario: '13:00-14:00' },
+    { periodo: 2, horario: '14:00-15:00' },
+    { periodo: 3, horario: '15:00-16:00' },
+    { periodo: 4, horario: '16:00-17:00' },
+    { periodo: 5, horario: '17:00-18:00' },
+    { periodo: 6, horario: '18:00-19:00' }
+  ],
+  'Noite': [
+    { periodo: 1, horario: '19:00-20:00' },
+    { periodo: 2, horario: '20:00-21:00' },
+    { periodo: 3, horario: '21:00-22:00' },
+    { periodo: 4, horario: '22:00-23:00' }
+  ]
+};
+
 /**
- * Extrai horários de aulas a partir das informações da sala
+ * Extrai horários de aulas a partir das informações da sala seguindo formato SIGAA UFPB
  * @param codigoSala código da sala para obter os horários
  * @returns Array de horários de aula
  */
@@ -335,57 +362,106 @@ export function getHorariosSala(codigoSala: string): HorarioAula[] {
   sala.classes.forEach(disciplina => {
     if (!disciplina.horario) return;
 
-    // Exemplo de formato de horário: "3T34 5T34"
-    // Significa: Quarta (3) Tarde (T) slots 3 e 4, Sexta (5) Tarde (T) slots 3 e 4
-    const horariosStr = disciplina.horario.split(' ');
+    // Parse do formato SIGAA: "3T34 5T34" ou "24M12"
+    const horariosStr = disciplina.horario.trim().split(/\s+/);
 
     horariosStr.forEach(horarioStr => {
       if (horarioStr.length < 3) return;
 
-      // Extrai dia da semana (1=Segunda, 2=Terça, etc)
-      const diaNum = parseInt(horarioStr.charAt(0), 10);
-      if (isNaN(diaNum) || diaNum < 1 || diaNum > 6) return;
+      // Extrai dias da semana - podem ser múltiplos dígitos consecutivos
+      const diasMatch = horarioStr.match(/^([2-7]+)/);
+      if (!diasMatch) return;
+
+      const diasNums = diasMatch[1].split('').map(d => parseInt(d, 10));
+
+      // Extrai turno
+      const turnoMatch = horarioStr.match(/[MTN]/);
+      if (!turnoMatch) return;
+
+      const turnoChar = turnoMatch[0];
+      const turnosMap: Record<string, Turno> = {
+        'M': 'Manhã',
+        'T': 'Tarde',
+        'N': 'Noite'
+      };
+
+      const turno = turnosMap[turnoChar];
+      if (!turno) return;
+
+      // Extrai períodos - números após o turno
+      const periodosMatch = horarioStr.match(/[MTN]([1-6]+)/);
+      if (!periodosMatch) return;
+
+      const periodosStr = periodosMatch[1];
+      const periodos = periodosStr.split('').map(p => parseInt(p, 10));
 
       // Mapeia número para nome do dia
       const diasMap: Record<number, DiaSemana> = {
-        1: 'Segunda', 2: 'Terça', 3: 'Quarta',
-        4: 'Quinta', 5: 'Sexta', 6: 'Sábado'
+        2: 'Segunda',
+        3: 'Terça',
+        4: 'Quarta',
+        5: 'Quinta',
+        6: 'Sexta',
+        7: 'Sábado'
       };
 
-      // Extrai o turno (M=Manhã, T=Tarde, N=Noite)
-      const turnoChar = horarioStr.charAt(1);
-      const turnosMap: Record<string, Turno> = {
-        'M': 'Manhã', 'T': 'Tarde', 'N': 'Noite'
-      };
+      // Cria entrada para cada combinação dia/período
+      diasNums.forEach(diaNum => {
+        if (diaNum < 2 || diaNum > 7) return;
 
-      // Converte slots de horário para formato legível
-      const slots = horarioStr.substring(2);
-      let horarioFormatado = '';
+        const dia = diasMap[diaNum];
 
-      switch(turnoChar) {
-        case 'M':
-          horarioFormatado = slots.includes('1') || slots.includes('2') ? '08:00-10:00' : '10:00-12:00';
-          break;
-        case 'T':
-          horarioFormatado = slots.includes('1') || slots.includes('2') ? '14:00-16:00' : '16:00-18:00';
-          break;
-        case 'N':
-          horarioFormatado = slots.includes('1') || slots.includes('2') ? '18:30-20:30' : '20:30-22:00';
-          break;
-        default:
-          horarioFormatado = 'Horário não especificado';
-      }
+        periodos.forEach(periodoNum => {
+          const periodoInfo = PERIODOS_POR_TURNO[turno]?.find(p => p.periodo === periodoNum);
+          if (!periodoInfo) return;
 
-      horarios.push({
-        dia: diasMap[diaNum],
-        horario: horarioFormatado,
-        turno: turnosMap[turnoChar] || 'Tarde',
-        disciplina: disciplina.nome,
-        professor: disciplina.docente || disciplina.professor || 'Não informado',
-        turma: disciplina.turma || 'N/A'
+          horarios.push({
+            dia,
+            horario: periodoInfo.horario,
+            turno,
+            disciplina: disciplina.nome,
+            professor: disciplina.docente || disciplina.professor || 'Não informado',
+            turma: disciplina.turma || 'N/A',
+            periodo: periodoNum
+          });
+        });
       });
     });
   });
 
   return horarios;
+}
+
+/**
+ * Obtém a grade completa de horários com todas as células (ocupadas e vazias)
+ * @param codigoSala código da sala
+ * @returns Matriz estruturada de horários
+ */
+export function getGradeCompleta(codigoSala: string): Record<DiaSemana, Record<Turno, Array<{ periodo: number; horario: string; aula?: HorarioAula }>>> {
+  const horariosOcupados = getHorariosSala(codigoSala);
+  const grade: Record<DiaSemana, Record<Turno, Array<{ periodo: number; horario: string; aula?: HorarioAula }>>> = {} as any;
+
+  const diasSemana: DiaSemana[] = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+  const turnos: Turno[] = ['Manhã', 'Tarde', 'Noite'];
+
+  // Inicializa grade vazia
+  diasSemana.forEach(dia => {
+    grade[dia] = {} as any;
+    turnos.forEach(turno => {
+      grade[dia][turno] = PERIODOS_POR_TURNO[turno].map(p => ({
+        periodo: p.periodo,
+        horario: p.horario
+      }));
+    });
+  });
+
+  // Preenche com aulas ocupadas
+  horariosOcupados.forEach(aula => {
+    const slot = grade[aula.dia][aula.turno].find(s => s.periodo === aula.periodo);
+    if (slot) {
+      slot.aula = aula;
+    }
+  });
+
+  return grade;
 }

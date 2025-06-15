@@ -260,18 +260,20 @@
   letter-spacing: 0.1px;
 }
 
-/* Estilos para a grade de horários */
+/* Estilos atualizados para a grade de horários */
 .horarioGrid {
   overflow-x: auto;
   margin-bottom: 1rem;
   border-radius: 8px;
   background-color: var(--ifm-color-emphasis-0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .horarioTable {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.85rem;
+  min-width: 900px; /* Aumenta largura mínima para acomodar nova coluna */
 }
 
 .horarioTable th,
@@ -279,6 +281,7 @@
   border: 1px solid var(--ifm-color-emphasis-300);
   padding: 0.5rem;
   text-align: center;
+  vertical-align: middle;
 }
 
 .horarioTable th {
@@ -289,21 +292,56 @@
   z-index: 1;
 }
 
+.horarioTable th:first-child {
+  min-width: 80px; /* Largura para coluna Turno */
+}
+
+.horarioTable th:nth-child(2) {
+  min-width: 100px; /* Largura para coluna Período */
+}
+
+.horarioTable th:nth-child(n+3) {
+  min-width: 120px; /* Largura para colunas dos dias */
+}
+
 .horarioTurno {
   background-color: var(--ifm-color-emphasis-100);
   font-weight: 600;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  min-width: 80px;
+  padding: 1rem 0.5rem;
+}
+
+.horarioPeriodo {
+  background-color: var(--ifm-color-emphasis-50);
+  font-weight: 500;
+  min-width: 100px;
+  text-align: center;
+}
+
+.periodoInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  align-items: center;
+}
+
+.periodoNumero {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.periodoHorario {
+  font-size: 0.75rem;
+  color: var(--ifm-color-emphasis-700);
 }
 
 .horarioCell {
-  vertical-align: top;
-  min-width: 110px;
-  height: 110px;
-}
-
-.horarioAulas {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  vertical-align: middle;
+  min-width: 120px;
+  height: 80px;
+  max-width: 150px;
 }
 
 .horarioAula {
@@ -312,6 +350,8 @@
   padding: 0.5rem;
   font-size: 0.8rem;
   text-align: left;
+  margin: 0.25rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .horarioInfo {
@@ -322,28 +362,40 @@
 
 .horarioProfessor {
   font-size: 0.75rem;
-  color: #424242; /* Substituindo var(--ifm-color-emphasis-700) por cor mais escura */
+  color: #424242;
+  font-style: italic;
 }
 
 .horarioTurma {
   font-size: 0.7rem;
-  color: #505050; /* Substituindo var(--ifm-color-emphasis-600) por cor mais escura */
+  color: #505050;
+  font-weight: 500;
 }
 
 .horarioVazio {
-  color: #666666; /* Substituindo var(--ifm-color-emphasis-500) por cor mais escura */
+  color: #666666;
   font-style: italic;
+  font-size: 0.8rem;
 }
 
 /* Media query para melhorar responsividade */
 @media (max-width: 768px) {
   .horarioTable {
     font-size: 0.75rem;
+    min-width: 700px;
   }
 
   .horarioCell {
+    min-width: 100px;
+    height: 70px;
+  }
+
+  .horarioTurno {
+    min-width: 60px;
+  }
+
+  .horarioPeriodo {
     min-width: 80px;
-    height: 80px;
   }
 }
 
