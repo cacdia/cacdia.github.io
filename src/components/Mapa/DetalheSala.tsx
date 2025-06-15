@@ -140,10 +140,6 @@ function InfoTab({ sala }: { sala: Sala }) {
         <ProfessoresDetalhados professores={sala.professores} />
       ) : (
         <>
-          {sala.classes && sala.classes.length > 0 && (
-            <ClassesList classes={sala.classes} />
-          )}
-
           {sala.professores && sala.professores.length > 0 && (
             <ProfessoresList professores={sala.professores} />
           )}
@@ -229,25 +225,6 @@ function DetailItem({
   );
 }
 
-function ClassesList({
-  classes,
-}: {
-  classes: { id: string; codigo: string; nome: string; turma: string }[];
-}) {
-  return (
-    <div className={styles.infoSection}>
-      <h4 className={styles.infoSectionTitle}>Disciplinas/Turmas</h4>
-      <ul className={styles.infoList}>
-        {classes.map((disciplina) => (
-          <li key={disciplina.id} className={styles.infoListItem}>
-            <strong>{disciplina.codigo}:</strong> {disciplina.nome} -{" "}
-            {disciplina.turma}
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
 
 function ProfessoresList({ professores }: { professores: Professor[] }) {
   return (
@@ -424,7 +401,7 @@ function ErrorState({
   );
 }
 
-// Novo componente de Grade de Horários atualizado
+// Novo componente de Grade de Horários completamente refatorado
 function HorarioGrid({ codigoSala }: { codigoSala: string }) {
   const gradeCompleta = getGradeCompleta(codigoSala);
   const diasSemana: DiaSemana[] = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
@@ -434,64 +411,80 @@ function HorarioGrid({ codigoSala }: { codigoSala: string }) {
     <div className={styles.infoSection}>
       <h4 className={styles.infoSectionTitle}>Grade de Horários</h4>
       <div className={styles.horarioGrid}>
-        <table className={styles.horarioTable}>
-          <thead>
-            <tr>
-              <th>Turno</th>
-              <th>Período</th>
-              {diasSemana.map((dia) => (
-                <th key={dia}>{dia}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {turnos.map((turno) => {
-              const periodos = PERIODOS_POR_TURNO[turno];
-              return periodos.map((periodoInfo, idx) => (
-                <tr key={`${turno}-${periodoInfo.periodo}`}>
-                  {idx === 0 && (
-                    <td
-                      className={styles.horarioTurno}
-                      rowSpan={periodos.length}
-                    >
-                      <div>
-                        <strong>{turno}</strong>
+        <div className={styles.horarioContainer}>
+          <table className={styles.horarioTable}>
+            <thead>
+              <tr>
+                <th>Turno</th>
+                <th>Período</th>
+                {diasSemana.map((dia) => (
+                  <th key={dia}>{dia}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {turnos.map((turno) => {
+                const periodos = PERIODOS_POR_TURNO[turno];
+                return periodos.map((periodoInfo, idx) => (
+                  <tr key={`${turno}-${periodoInfo.periodo}`}>
+                    {idx === 0 && (
+                      <td
+                        className={styles.horarioTurno}
+                        rowSpan={periodos.length}
+                      >
+                        {turno}
+                      </td>
+                    )}
+                    <td className={styles.horarioPeriodo}>
+                      <div className={styles.periodoInfo}>
+                        <div className={styles.periodoNumero}>
+                          {periodoInfo.periodo}
+                        </div>
+                        <div className={styles.periodoHorario}>
+                          {periodoInfo.horario}
+                        </div>
                       </div>
                     </td>
-                  )}
-                  <td className={styles.horarioPeriodo}>
-                    <div className={styles.periodoInfo}>
-                      <span className={styles.periodoNumero}>{periodoInfo.periodo}º</span>
-                      <span className={styles.periodoHorario}>{periodoInfo.horario}</span>
-                    </div>
-                  </td>
-                  {diasSemana.map((dia) => {
-                    const slot = gradeCompleta[dia][turno].find(s => s.periodo === periodoInfo.periodo);
-                    return (
-                      <td key={`${dia}-${turno}-${periodoInfo.periodo}`} className={styles.horarioCell}>
-                        {slot?.aula ? (
-                          <div className={styles.horarioAula}>
-                            <div className={styles.horarioInfo}>
-                              <strong>{slot.aula.disciplina}</strong>
-                              <div className={styles.horarioProfessor}>
-                                {slot.aula.professor}
-                              </div>
-                              <div className={styles.horarioTurma}>
-                                Turma: {slot.aula.turma}
+                    {diasSemana.map((dia) => {
+                      const slot = gradeCompleta[dia][turno].find(s => s.periodo === periodoInfo.periodo);
+                      return (
+                        <td key={`${dia}-${turno}-${periodoInfo.periodo}`} className={styles.horarioCell}>
+                          {slot?.aula ? (
+                            <div className={styles.horarioAula}>
+                              <div className={styles.horarioInfo}>
+                                <div className={styles.horarioDisciplina}>
+                                  {slot.aula.disciplina}
+                                </div>
+                                <div className={styles.horarioProfessor}>
+                                  {slot.aula.professor}
+                                </div>
+                                <div className={styles.horarioTurma}>
+                                  {slot.aula.turma}
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        ) : (
-                          <span className={styles.horarioVazio}>Livre</span>
-                        )}
-                      </td>
-                    );
-                  })}
-                </tr>
-              ));
-            })}
-          </tbody>
-        </table>
+                          ) : (
+                            <div className={styles.horarioVazio}>Livre</div>
+                          )}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                ));
+              })}
+            </tbody>
+          </table>
+        </div>
+        <div className={styles.horarioLegenda}>
+          <div className={styles.legendaHorario}>
+            <div className={`${styles.legendaIcon} ${styles.legendaOcupado}`}></div>
+            <span>Aulas Agendadas</span>
+          </div>
+          <div className={styles.legendaHorario}>
+            <div className={`${styles.legendaIcon} ${styles.legendaLivre}`}></div>
+            <span>Horários Livres</span>
+          </div>
+        </div>
       </div>
     </div>
   );
