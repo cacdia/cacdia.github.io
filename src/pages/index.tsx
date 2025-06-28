@@ -29,7 +29,7 @@ function HomepageHeader(): ReactNode {
           >
             Fluxograma
           </Link>
-          <Link className="button button--secondary button--lg" to="/mapa">
+          <Link className="button button--secondary button--lg" to="https://perere.pages.dev/">
             Mapa do CI
           </Link>
         </div>
