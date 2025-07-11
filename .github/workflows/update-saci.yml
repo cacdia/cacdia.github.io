@@ -23,7 +23,7 @@ jobs:
       # 4) Download com -f para falhar em HTTP errors
       - name: Baixa o JSON remoto
         run: |
-          curl -fsSL "https://sa.ci.ufpb.br/api/db/public/paas?centro=ci" -o novo_saci.json
+          curl -fsSL "https://sa.ci.ufpb.br/api/paas/center?id=CI" -o novo_saci.json
 
       # Passo extra para gerar a data
       - name: Define data
