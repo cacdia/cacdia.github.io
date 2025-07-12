@@ -1,6 +1,6 @@
 /*
  * Estilos minimalistas para o fluxograma acadêmico
- * Revisado: removido blur e opacidade para visual mais limpo e profissional
+ * Revisado: suporte completo para temas claro e escuro
  * Migrado de styles.css para CSS Modules
  */
 
@@ -33,6 +33,7 @@
   align-items: center;
   margin-bottom: 8px;
   font-size: 14px;
+  color: var(--ifm-color-content);
 }
 
 .clearButton {
@@ -47,6 +48,7 @@
   width: 24px;
   height: 24px;
   border-radius: 50%;
+  transition: background-color 0.2s ease;
 }
 
 .clearButton:hover {
@@ -75,6 +77,7 @@
   text-align: center;
   font-size: 16px;
   font-weight: 600;
+  color: var(--ifm-color-content);
 }
 
 .periodDisciplines {
@@ -85,11 +88,12 @@
 
 .disciplineCard {
   padding: 8px 10px;
-  border: 1.5px solid var(--ifm-color-emphasis-500);
+  border: 1.5px solid var(--ifm-color-emphasis-400);
   border-radius: 4px;
   cursor: pointer;
-  transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s, opacity 0.3s ease;
-  background-color: #f8fafc;
+  transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s, opacity 0.3s, background-color 0.2s;
+  background-color: var(--ifm-background-surface-color);
+  color: var(--ifm-color-content);
 }
 
 .hasSelection .disciplineCard:not(.disciplineSelected):not(.disciplinePrerequisite):not(.disciplineDependent) {
@@ -99,7 +103,7 @@
 
 /* Os estados abaixo devem ser aplicados via className condicional */
 .disciplineCard:hover {
-  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.08);
+  box-shadow: 0 2px 8px 0 var(--ifm-color-emphasis-200);
   border-color: var(--ifm-color-primary);
   transform: translateY(-2px) scale(1.01);
 }
@@ -107,17 +111,17 @@
 .disciplineSelected {
   border-color: var(--ifm-color-primary);
   background-color: var(--ifm-color-primary-lightest);
-  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.10);
+  box-shadow: 0 2px 8px 0 var(--ifm-color-primary-light);
 }
 
 .disciplinePrerequisite {
   border-color: var(--ifm-color-warning);
-  background-color: #fffbe6;
+  background-color: var(--ifm-color-warning-contrast-background, #fffbe6);
 }
 
 .disciplineDependent {
   border-color: var(--ifm-color-success);
-  background-color: #e6fff2;
+  background-color: var(--ifm-color-success-contrast-background, #e6fff3);
 }
 
 .disciplineNoPrerequisites {
@@ -147,6 +151,7 @@
   font-size: 15px;
   font-weight: 500;
   margin: 0 0 2px 0;
+  color: var(--ifm-color-content);
 }
 
 .disciplinePrerequisites {
@@ -156,6 +161,31 @@
 
 .prereqCount {
   font-weight: 400;
+}
+
+/* Tema escuro específico */
+[data-theme='dark'] .disciplineCard {
+  background-color: var(--ifm-background-surface-color);
+  border-color: var(--ifm-color-emphasis-400);
+}
+
+[data-theme='dark'] .disciplinePrerequisite {
+  background-color: rgba(255, 193, 7, 0.1);
+  border-color: var(--ifm-color-warning);
+}
+
+[data-theme='dark'] .disciplineDependent {
+  background-color: rgba(40, 167, 69, 0.1);
+  border-color: var(--ifm-color-success);
+}
+
+[data-theme='dark'] .disciplineSelected {
+  background-color: rgba(var(--ifm-color-primary-rgb), 0.15);
+  border-color: var(--ifm-color-primary);
+}
+
+[data-theme='dark'] .disciplineCard:hover {
+  box-shadow: 0 2px 8px 0 rgba(255, 255, 255, 0.1);
 }
 
 @media screen and (max-width: 768px) {
