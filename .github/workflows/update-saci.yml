@@ -16,7 +16,7 @@ jobs:
     steps:
       # 3) Checkout “on branch” para permitir commit
       - name: Checkout do repositório
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: master
 
