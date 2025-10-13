@@ -44,7 +44,7 @@ jobs:
       # 6) Commit & Push com parâmetros corretos
       - name: Commit & Push se houver mudanças
         if: steps.compara.outputs.mudou == 'true'
-        uses: stefanzweifel/git-auto-commit-action@v6
+        uses: stefanzweifel/git-auto-commit-action@v7
         with:
           commit_message: "chore: atualiza saci.json com dados de ${{ steps.data.outputs.date }}"
           file_pattern: static/data/saci/saci.json
